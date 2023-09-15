@@ -1,0 +1,114 @@
+安装可参考：
+https://article.itxueyuan.com/GorkmP
+安装kubeadm等：
+yum install -y kubelet-1.18.8 kubeadm-1.18.8 kubectl-1.18.8
+
+初始化：
+kubeadm init --apiserver-advertise-address=192.168.3.172 --image-repository registry.aliyuncs.com/google_containers --kubernetes-version v1.23.0 --service-cidr=10.1.0.0/12 --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all
+
+这一步很多坑。
+
+
+错误解决参考：
+https://huaweicloud.csdn.net/633117eed3efff3090b51cce.html
+-------------------------------------
+
+安装完成以后显示：
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.3.172:6443 --token l5yxy9.1vm1437k7uf3jjb7 \
+	--discovery-token-ca-cert-hash sha256:e8d36fcdfacf03de4263f30c293af62e1e705b30ea568678951dd5b621a95d
+这个的token 24小时后失效，如果要继续加入，在master机器上执行：
+
+kubeadm token create --print-join-command
+
+生成新的token和加入命令
+——————————————————————
+
+删除kubernetes
+——————————
+kubeadm reset -f
+modprobe -r ipip
+lsmod
+rm -rf ~/.kube/
+rm -rf /etc/kubernetes/
+rm -rf /etc/systemd/system/kubelet.service.d
+rm -rf /etc/systemd/system/kubelet.service
+rm -rf /usr/bin/kube*
+rm -rf /etc/cni
+rm -rf /opt/cni
+rm -rf /var/lib/etcd
+rm -rf /var/etcd
+yum remove kubeadm
+yum remove kubelet
+yum clean all
+yum remove kube*
+——————————
+
+如果修改配置后发生问题，可以复位后再启动kubernetes，复位kubernetes命令：
+
+swapoff -a && kubeadm reset  && systemctl daemon-reload && systemctl restart kubelet  && iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+删除node
+kubectl delete nodes [node-name]
+----------------------------
+
+修改的文件：
+/etc/yum.repos.d/kubernetes.repo
+/etc/sysctl.d/k8s.conf
+错误：
+[ERROR CRI]: container runtime is not running: output: time="2023-08-22T18:58:34+08:00" level=fatal msg="validate service connection: CRI v1 runtime API is not implemented for endpoint \"unix:///var/run/containerd/containerd.sock\": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService"
+, error: exit status 1
+
+解决：
+[root@hwConn001 ~]# rm -rf /etc/containerd/config.toml
+[root@hwConn001 ~]# systemctl restart containerd
+
+错误：
+[ERROR FileContent--proc-sys-net-bridge-bridge-nf-call-iptables]: /proc/sys/net/bridge/bridge-nf-call-iptables contents are not set to 1
+解决：
+在/etc/sysctl.conf中添加：
+ 
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+
+执行sysctl -p 刷新
+
+[root@hwConn001 ~]#sysctl -p
+
+查看端口情况
+
+netstat -tlunp
+
+
+docker network create app-tier --driver bridge
+
+docker run -d --name etcd-server --network app-tier --publish 2379:2379 --publish 2380:2380 --env ALLOW_NONE_AUTHENTICATION=yes  --env ETCD_ADVERTISE_CLIENT_URLS=http://127.0.0.1:2379 bitnami/etcd:latest
+
+
+
+docker run -it --rm  --network app-tier --env ALLOW_NONE_AUTHENTICATION=yes bitnami/etcd:latest etcdctl --endpoints http://etcd-server:2379 set /message Hello
+
+docker run -it --rm  --network app-tier --env ALLOW_NONE_AUTHENTICATION=yes bitnami/etcd:latest etcdctl --endpoints http://etcd-server:2379 set /message Hello
+
+
+./etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379 --listen-peer-urls http://0.0.0.0:2380
+# 后台启动
+nohup ./etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379 --listen-peer-urls http://0.0.0.0:2380 > /tmp/etcd.log 2>&1 &
+
+
