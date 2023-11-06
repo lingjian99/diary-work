@@ -1,0 +1,153 @@
+version: '3'
+
+services:
+#  BUILD +sys-rpc-docker
+  sys-prc:
+    image: hub.dajiaxiaojia.com/kuaima/sys-rpc:main
+    container_name: sys-rpc
+    volumes:
+      - ./deploy/test-conf/sys:/app/etc
+      - /home/kuaima/logs/sys-rpc:/app/logs
+
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+  #  BUILD +client-api-docker
+  client-api:
+    image: hub.dajiaxiaojia.com/kuaima/client-api:main
+    container_name: client-api
+    volumes:
+      - ./deploy/test-conf/client:/app/etc
+      - /home/kuaima/logs/client-api:/app/logs
+
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+#  BUILD +mch-api-docker
+  mch-api:
+    image: hub.dajiaxiaojia.com/kuaima/mch-api:main
+    container_name: mch-api
+    volumes:
+      - ./deploy/test-conf/mch:/app/etc
+      - /home/kuaima/logs/mch-api:/app/logs
+    restart: always
+    ports:
+      - "7777:7777"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+  employee-api:
+    image: hub.dajiaxiaojia.com/kuaima/employee-api:main
+    container_name: employee-api
+    volumes:
+      - ./deploy/test-conf/employee:/app/etc
+      - /home/kuaima/logs/employee-api:/app/logs
+    restart: always
+    ports:
+      - "9999:9999"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+#  BUILD +callbacks-api-docker
+  callbacks-api:
+    image: hub.dajiaxiaojia.com/kuaima/callbacks-api:main
+    container_name: callbacks-api
+    volumes:
+      - ./deploy/test-conf/callbacks/:/app/etc
+      - /home/kuaima/logs/callbacks-api:/app/logs
+
+    restart: always
+    ports:
+      - "7788:7788"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+#  BUILD +admin-api-docker
+  admin-api:
+    image: hub.dajiaxiaojia.com/kuaima/admin-api:main
+    container_name: admin-api
+    volumes:
+      - ./deploy/test-conf/admin/:/app/etc
+      - /home/kuaima/logs/admin-api:/app/logs
+
+    command: ["-f", "etc/admin-api.yaml"]
+    restart: always
+    ports:
+      - "7070:7070"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+
+  hardware-api:
+    image: hub.dajiaxiaojia.com/kuaima/hardware-api:main
+    container_name: hardware-api
+    volumes:
+      - ./deploy/test-conf/hardware/:/app/etc
+      - /home/kuaima/logs/hardware-api:/app/logs
+    command: [ "-f", "etc/hardware-api.yaml" ]
+    restart: always
+    ports:
+      - "10888:10888"
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+    depends_on:
+      - hw-netserver
+
+#  BUILD +kmqueue-scheduler-docker
+  kmqueue-scheduler:
+    image: hub.dajiaxiaojia.com/kuaima/kmqueue-scheduler:main
+    container_name: kmqueue-scheduler
+    volumes:
+      - ./deploy/test-conf/kmqueue-scheduler/:/app/etc
+      - /home/kuaima/logs/kmqueue-scheduler:/app/logs
+
+    command: ["-f", "etc/km-scheduler.yaml"]
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+#  BUILD +kmqueue-job-docker
+  kmqueue-job:
+    image: hub.dajiaxiaojia.com/kuaima/kmqueue-job:main
+    container_name: kmqueue-job
+    volumes:
+      - ./deploy/test-conf/kmqueue-job/:/app/etc
+      - /home/kuaima/logs/kmqueue-job:/app/logs
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - kuaima_net
+      - env-docker_kuaima_net
+
+networks:
+  kuaima_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  env-docker_kuaima_net:
+    external: true

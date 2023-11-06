@@ -1,0 +1,218 @@
+1) 安装Ubuntu指定的镜像 
+
+https://mirrors.aliyun.com/ubuntu
+
+需要正确设置网络，VMware使用缺省网络设置，虚拟机应该选择网桥模式。
+
+停止磁盘swap，SELinux（if installed），防火墙（或者开放需要的端口），
+
+2) 停止防火墙
+
+sudo systemctl stop ufw.service
+sudo systemctl disable ufw.service
+
+3) 关闭swap 和SELinux
+
+sudo swapoff -a && sudo sed -ri 's/.*swap.*/#&/' /etc/fstab
+
+//关闭selinux
+ 
+4) 将桥接的IPv4流量传递到iptables的链
+
+sudo cat > /etc/sysctl.d/k8s.conf << EOF
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+
+是修改生效
+sysctl --system -p /etc/sysctl.d/k8s.conf
+
+4) 安装Docker，并启动
+
+sudo apt install docker.io
+
+sudo systemctl enable docker
+sudo systemctl start docker
+
+5) 更改docker的Cgroup driver模式为systemd
+vim /etc/docker/daemon.josn
+加入:
+{  
+   "exec-opts": ["native.cgroupdriver=systemd"],
+   "registry-mirrors": ["https://ehdoihig.mirror.aliyuncs.com"]  
+}
+
+6) kubernetes安装准备
+在 /etc/apt/sources.list加入：
+deb https://mirrors.aliyun.com/kubernetes/apt kubernetes-xenial main
+执行下面命令，下载上面镜像的key
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo apt-key add
+
+7) 安装kubernetes
+sudo apt-get -y install kubelet=1.23.0-00 kubeadm=1.23.0-00 kubectl=1.23.0-00
+
+8) 用 kubeadm 初始化 kubernetes
+ sudo kubeadm init --apiserver-advertise-address=192.168.3.156 \
+    --image-repository registry.aliyuncs.com/google_containers  \
+    --kubernetes-version v1.23.0 \
+    --service-cidr=10.96.0.0/12 \
+    --pod-network-cidr=10.244.0.0/16
+
+安装成功后显示：
+*******************************************************
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.3.156:6443 --token cuqm3z.bj2hig2v1r3lrh7j \
+	--discovery-token-ca-cert-hash sha256:a02bccfc6d00329845b423824426a6eba671bcc22a4e8d80c587f5e6e7e177b1 
+
+
+**********************************************************
+
+9) 加入 worker node
+生成join token
+kubeadm token create --print-join-command
+在待加入的node上用类似下面的命令加入
+
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkxBWGFmNGt1ekNJdjNzYmIxWGZCMWI1bWxKbGJQdzlCdmVIMDM4MlQwSk0ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTZubDd3Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMWRlOTg1ZS0wYTBlLTRhZGYtYWM2ZS0zMTEwMTc4NWM0YzEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.jh1M1U3ejlRtxUXMJazr9tWdsDcnktvj8ikynavgjaH3QLHnx33x99FUGJNtAgA9ChuFXXvouEqICYXVdGIerU2hVjRPfmfkUCB-fndPLQxyCt6GVjDInbL8dot35P3BIVhQL7vlSlSWbkjFUPBIQmDBnN-BaXD1aUBS4cdSWdpFX0z7O71Bkob-ED9BLoGpz-Ex0Iq3x_0dkudprsNTjTrIRO-aXUbsIcNRG5bNN8GIESSZp2CevpWaWGN1S93YfQpzNFozx-PC5cte8MKpZoq68IELkR6ay-gRCWTqK3dO-fOuc_cDCKt6WoNfGWFwZEq1MyP_63oIlIuZLrMKbA
+
+
+
+10) 安装CNI calico
+下载yaml文件
+
+文件url：https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
+修改的文件：
+修改后的文件为calico.yaml
+执行命令：
+kubectl apply -f calico.yaml
+
+11) 安装dashboard
+
+下载yaml文件：
+文件url：https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.0/src/deploy/recommended/kubernetes-dashboard.yaml
+
+参考：https://blog.csdn.net/xhredeem/article/details/127439037
+
+使用下列命令生成dashboard的token
+ kubectl  describe  -n kubernetes-dashboard  secrets default-token-gmzm7
+ kubectl  describe  -n kubernetes-dashboard  secrets admin-user-token-6nl7w
+
+
+209：
+156：
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkxBWGFmNGt1ekNJdjNzYmIxWGZCMWI1bWxKbGJQdzlCdmVIMDM4MlQwSk0ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTZubDd3Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMWRlOTg1ZS0wYTBlLTRhZGYtYWM2ZS0zMTEwMTc4NWM0YzEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.jh1M1U3ejlRtxUXMJazr9tWdsDcnktvj8ikynavgjaH3QLHnx33x99FUGJNtAgA9ChuFXXvouEqICYXVdGIerU2hVjRPfmfkUCB-fndPLQxyCt6GVjDInbL8dot35P3BIVhQL7vlSlSWbkjFUPBIQmDBnN-BaXD1aUBS4cdSWdpFX0z7O71Bkob-ED9BLoGpz-Ex0Iq3x_0dkudprsNTjTrIRO-aXUbsIcNRG5bNN8GIESSZp2CevpWaWGN1S93YfQpzNFozx-PC5cte8MKpZoq68IELkR6ay-gRCWTqK3dO-fOuc_cDCKt6WoNfGWFwZEq1MyP_63oIlIuZLrMKbA
+ kubectl  describe  -n kubernetes-dashboard  secrets admin-user-token-6nl7w
+
+
+
+jian@master-1:~/kpi$ kubeadm token create --print-join-command
+
+12) 安装nfs
+参考：https://blog.csdn.net/weixin_42758707/article/details/129855396
+https://blog.csdn.net/m0_48898914/article/details/120200312?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-120200312-blog-127055835.235%5Ev38%5Epc_relevant_sort_base1&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-120200312-blog-127055835.235%5Ev38%5Epc_relevant_sort_base1&utm_relevant_index=1
+
+***********  Troubleshooting ************
+
+***** k8s报错：The connection to the server localhost:8080 was refused
+
+k8s的node节点使用kubectl命令时，如kubectl get pods --all-namespaces 出现如下错误：
+
+[root@k8s-node239 ~]# kubectl get pods
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+解决办法1:使用一个非 root 账户登录，然后运行下列命令：
+
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/admin.conf
+export KUBECONFIG=$HOME/admin.conf
+解决办法2：
+
+出现这个问题的原因是kubectl命令需要使用kubernetes-admin的身份来运行，在“kubeadm int”启动集群的步骤中就生成了“/etc/kubernetes/admin.conf”。
+
+因此，解决方法如下，将主节点中的【/etc/kubernetes/admin.conf】文件拷贝到工作节点相同目录下：
+
+#复制admin.conf，请在主节点服务器上执行此命令
+scp /etc/kubernetes/admin.conf 172.16.2.202:/etc/kubernetes/admin.conf
+scp /etc/kubernetes/admin.conf 172.16.2.203:/etc/kubernetes/admin.conf
+然后分别在工作节点上配置环境变量：
+
+#设置kubeconfig文件
+export KUBECONFIG=/etc/kubernetes/admin.conf
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
+
+
+**** K8s Node节点ROLES为<none>
+
+添加label语法：
+
+kubectl label nodes <node-name> <label-key>=<label-value> 
+修改实例： 
+
+kubectl label nodes k8s-node1.hikvision.com node-role.kubernetes.io/worker=worker
+kubectl label nodes node-1 node-role.kubernetes.io/worker=worker
+
+删除label：
+kubectl label nodes <node-name> <label-key>-
+
+
+强制删除namespace（namespace为vela-system）
+kubectl get namespace vela-system -o json \
+            | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/" \
+            | kubectl replace --raw /api/v1/namespaces/vela-system/finalize -f -
+
+
+************************************************
+all in one 安装kubesphere：
+
+下载kk:
+curl -sfL https://get-kk.kubesphere.io | VERSION=v3.0.10 sh -
+
+安装下列软件：
++-----------------+------+------+---------+----------+-------+-------+---------+-----------+--------+--------+------------+------------+-------------+------------------+--------------+
+| name            | sudo | curl | openssl | ebtables | socat | ipset | ipvsadm | conntrack | chrony | docker | containerd | nfs client | ceph client | glusterfs client | time         |
++-----------------+------+------+---------+----------+-------+-------+---------+-----------+--------+--------+------------+------------+-------------+------------------+--------------+
+| jian-kubesphere | y    | y    | y       | y        | y     |       |         | y         |        | 24.0.5 | 1.7.2      |            |             |                  | CST 15:09:33 |
++-----------------+------+------+---------+----------+-------+-------+---------+-----------+--------+--------+------------+------------+-------------+------------------+--------------+
+
+用kk安装：
+sudo ./kk create cluster --with-kubernetes v1.23.10 --with-kubesphere v3.4.0
+
+
+docker pull hub.dajiaxiaojia.com/kuaima/hardware-api@sha256:13eaff384890f85a52df650979c71a2bc83b23e04e4ab4dd50e81beda01bebcc
+
+
+
++---------+---------------+-----------------------------------+--------------------------------+-------+
+| CLUSTER |   COMPONENT   |     REF(KIND/NAMESPACE/NAME)      |            ENDPOINT            | INNER |
++---------+---------------+-----------------------------------+--------------------------------+-------+
+| local   | velaux-server | Service/vela-system/velaux-server | velaux-server.vela-system:8000 | true  |
++---------+---------------+-----------------------------------+--------------------------------+-------+
+    To open the dashboard directly by port-forward:hase: 
+    
+    vela port-forward -n vela-system addon-velaux 8000:8000
+    
+    Please refer to https://kubevela.io/docs/reference/addons/velaux for more VelaUX addon installation and visiting method.
+
+转NodePort访问：
+  vela addon enable velaux serviceType=NodePort
+
+To open the dashboard directly by port-forward:
+
+  vela port-forward -n vela-system addon-velaux 8000:8000

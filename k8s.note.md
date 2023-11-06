@@ -21,14 +21,14 @@ timedatectl set-timezone Asia/Shanghai
 验证服务器时区，正确配置如下。
 ```
 [jian@master ~]# timedatectl<br>
-    Local time: Sat 2023-09-02 14:43:50 CST<br>
-Universal time: Sat 2023-09-02 06:43:50 UTC<br>
-    RTC time: Sat 2023-09-02 06:43:50<br>
-    Time zone: Asia/Shanghai (CST, +0800)<br>
-    NTP enabled: yes<br>
-NTP synchronized: yes<br>
-RTC in local TZ: no<br>
-    DST active: n/a<br>
+    Local time: Sat 2023-09-02 14:43:50 CST
+Universal time: Sat 2023-09-02 06:43:50 UTC
+    RTC time: Sat 2023-09-02 06:43:50
+    Time zone: Asia/Shanghai (CST, +0800)
+    NTP enabled: yes
+NTP synchronized: yes
+RTC in local TZ: no
+    DST active: n/a
 ```
 
 
@@ -37,6 +37,14 @@ RTC in local TZ: no<br>
 systemctl stop firewalld
 systemctl disable firewalld
 ```
+ubuntu 关闭防火墙命令
+```
+sudo systemctl stop ufw.service
+sudo systemctl disable ufw.service
+
+sudo ufw status
+```
+
 
 禁用SELinux
 
@@ -64,6 +72,8 @@ EOF
 
 ```
 并通过 “sysctl --system” 命令使其生效
+
+sudo sysctl - p sudo sysctl -p /etc/sysctl.d/k8s.conf
 
 安装socat and conntrack which rae required when install kubespere
 ```

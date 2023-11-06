@@ -1,0 +1,23 @@
+version: '3'
+services:
+  golang03:
+    image: lingjian99/gonivinck-golang:latest
+    ports:                              
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+      - "9000:9000"
+      - "9001:9001"
+      - "9002:9002"
+      - "9003:9003"
+    environment:                         # 设置环境变量
+      - TZ=Asia/Shanghai
+    privileged: true
+    volumes:                             # 设置挂载目录
+      - C:/VSCode/go:/usr/src/code  # 引用 .env 配置中 CODE_PATH_HOST 变量，将宿主机上代码存放的目录挂载到容器中 /usr/src/code 目录
+    stdin_open: true                     # 打开标准输入，可以接受外部输入
+    tty: true
+
+    restart: always                      # 指定容器退出后的重启策略为始终重启
+
