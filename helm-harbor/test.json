@@ -1,0 +1,344 @@
+{
+    "material": [
+        {
+            "position": 1,
+            "specification": "描述：母排",
+            "type": "TMY",
+            "name": "母排",
+            "attribute": "母排",
+            "desc": "80*8",
+            "withstandcurrent": "",
+            "ratedcurentvalue": "1370",
+            "linkType": "master",
+            "uuid": "KF6Nlmqpz93lS",
+            "material": [
+                {
+                    "position": 1,
+                    "specification": "描述：进线总线",
+                    "material": [
+                        {
+                            "position": 1,
+                            "specification": "描述：开启式刀开关",
+                            "material": [
+                                {
+                                    "position": 1,
+                                    "specification": "描述：支路母排",
+                                    "material": [
+                                        {
+                                            "position": 1,
+                                            "specification": "描述：断路器",
+                                            "material": [
+                                                {
+                                                    "position": 1,
+                                                    "specification": "描述：电缆",
+                                                    "material": [
+                                                        {
+                                                            "position": 1,
+                                                            "specification": "描述：电流互感器",
+                                                            "material": [
+                                                                {
+                                                                    "position": 1,
+                                                                    "specification": "描述：压铸车间1#",
+                                                                    "type": "xx20001 型号",
+                                                                    "name": "出线总线",
+                                                                    "attribute": "出线总线",
+                                                                    "desc": "",
+                                                                    "withstandcurrent": "",
+                                                                    "ratedcurentvalue": "",
+                                                                    "linkType": "master",
+                                                                    "uuid": "ACfyw4Eruq"
+                                                                }
+                                                            ],
+                                                            "type": "LMZJ1 0.5",
+                                                            "name": "电流互感器",
+                                                            "attribute": "电流互感器b",
+                                                            "desc": "800/5",
+                                                            "withstandcurrent": "",
+                                                            "ratedcurentvalue": "800",
+                                                            "linkType": "master",
+                                                            "uuid": "VdDSnkwaax"
+                                                        }
+                                                    ],
+                                                    "type": "YJV",
+                                                    "name": "电缆",
+                                                    "attribute": "电缆",
+                                                    "desc": "3*120",
+                                                    "withstandcurrent": "",
+                                                    "ratedcurentvalue": "310",
+                                                    "linkType": "master",
+                                                    "uuid": "mUFhiqpuvq"
+                                                }
+                                            ],
+                                            "type": "NZM1-630S",
+                                            "switch": "0",
+                                            "name": "塑壳断路器",
+                                            "attribute": "塑壳断路器",
+                                            "desc": "",
+                                            "withstandcurrent": "42000",
+                                            "ratedcurentvalue": "630",
+                                            "linkType": "master",
+                                            "uuid": "ZhIeEpHRsx"
+                                        }
+                                    ],
+                                    "type": "TMY",
+                                    "name": "支路母排",
+                                    "attribute": "支路母排",
+                                    "desc": "40*6",
+                                    "withstandcurrent": "",
+                                    "ratedcurentvalue": "630",
+                                    "linkType": "master",
+                                    "uuid": "FEPlop3RDc"
+                                },
+                                {
+                                    "position": 2,
+                                    "specification": "描述：支路母排",
+                                    "material": [
+                                        {
+                                            "position": 1,
+                                            "specification": "描述：断路器",
+                                            "material": [
+                                                {
+                                                    "position": 1,
+                                                    "specification": "描述：电缆",
+                                                    "material": [
+                                                        {
+                                                            "position": 1,
+                                                            "specification": "描述：电流互感器",
+                                                            "material": [
+                                                                {
+                                                                    "position": 1,
+                                                                    "specification": "描述：压铸车间2#",
+                                                                    "type": "xx20001 型号",
+                                                                    "name": "出线总线",
+                                                                    "attribute": "出线总线",
+                                                                    "desc": "",
+                                                                    "withstandcurrent": "",
+                                                                    "ratedcurentvalue": "",
+                                                                    "linkType": "master",
+                                                                    "uuid": "DAONPBmzcQ"
+                                                                }
+                                                            ],
+                                                            "type": "LMZJ1 0.5",
+                                                            "name": "电流互感器",
+                                                            "attribute": "电流互感器b",
+                                                            "desc": "400/5",
+                                                            "withstandcurrent": "",
+                                                            "ratedcurentvalue": "400",
+                                                            "linkType": "master",
+                                                            "uuid": "pbFxm60tsa"
+                                                        }
+                                                    ],
+                                                    "type": "YJV",
+                                                    "name": "电缆",
+                                                    "attribute": "电缆",
+                                                    "desc": "3*95",
+                                                    "withstandcurrent": "",
+                                                    "ratedcurentvalue": "265",
+                                                    "linkType": "master",
+                                                    "uuid": "tHiWiq5T8u"
+                                                }
+                                            ],
+                                            "type": "NZM1-400S",
+                                            "switch": "0",
+                                            "name": "塑壳断路器",
+                                            "attribute": "塑壳断路器",
+                                            "desc": "",
+                                            "withstandcurrent": "42000",
+                                            "ratedcurentvalue": "400",
+                                            "linkType": "master",
+                                            "uuid": "pFL3dYN8Ah"
+                                        }
+                                    ],
+                                    "type": "TMY",
+                                    "name": "支路母排",
+                                    "attribute": "支路母排",
+                                    "desc": "30*5",
+                                    "withstandcurrent": "",
+                                    "ratedcurentvalue": "460",
+                                    "linkType": "master",
+                                    "uuid": "eWz1K5MfJz"
+                                }
+                            ],
+                            "type": "HD13BX",
+                            "switch": "0",
+                            "name": "开启式刀开关",
+                            "attribute": "开启式刀开关",
+                            "desc": "1000/31",
+                            "withstandcurrent": "40000",
+                            "ratedcurentvalue": "1000",
+                            "linkType": "master",
+                            "uuid": "KF6NCAm3lq"
+                        }
+                    ],
+                    "type": "TMY",
+                    "name": "连接母排",
+                    "attribute": "连接母排",
+                    "desc": "60*6",
+                    "withstandcurrent": "",
+                    "ratedcurentvalue": "912",
+                    "linkType": "master",
+                    "uuid": "kQW1gq4A8s"
+                }
+            ]
+        },
+        {
+            "position": 2,
+            "specification": "描述：母排",
+            "type": "TMY",
+            "name": "母排",
+            "attribute": "母排",
+            "desc": "80*8",
+            "withstandcurrent": "",
+            "ratedcurentvalue": "1370",
+            "linkType": "master",
+            "uuid": "KFsNlmqpz93lS",
+            "material": [
+                {
+                    "position": 1,
+                    "specification": "描述：进线总线",
+                    "attribute": "连接母排",
+                    "desc": "60*6",
+                    "withstandcurrent": "",
+                    "ratedcurentvalue": "912",
+                    "linkType": "master",
+                    "material": [
+                        {
+                            "position": 1,
+                            "specification": "描述：开启式刀开关",
+                            "attribute": "开启式刀开关",
+                            "desc": "1000/31",
+                            "withstandcurrent": "",
+                            "ratedcurentvalue": "1000",
+                            "linkType": "master",
+                            "material": [
+                                {
+                                    "position": 1,
+                                    "specification": "描述：支路母排",
+                                    "attribute": "支路母排",
+                                    "desc": "40*6",
+                                    "withstandcurrent": "",
+                                    "ratedcurentvalue": "630",
+                                    "linkType": "master",
+                                    "material": [
+                                        {
+                                            "position": 1,
+                                            "specification": "描述：断路器",
+                                            "attribute": "塑壳断路器",
+                                            "desc": "",
+                                            "withstandcurrent": "42000",
+                                            "ratedcurentvalue": "630",
+                                            "linkType": "master",
+                                            "material": [
+                                                {
+                                                    "position": 1,
+                                                    "specification": "备用电流互感器",
+                                                    "attribute": "电流互感器b",
+                                                    "desc": "800/5",
+                                                    "withstandcurrent": "",
+                                                    "ratedcurentvalue": "800",
+                                                    "linkType": "master",
+                                                    "material": [
+                                                        {
+                                                            "position": 1,
+                                                            "specification": "描述：备用",
+                                                            "attribute": "",
+                                                            "desc": "",
+                                                            "withstandcurrent": "",
+                                                            "ratedcurentvalue": "",
+                                                            "linkType": "branch",
+                                                            "type": "xx20001 型号",
+                                                            "name": "出线总线",
+                                                            "uuid": "XPsTkI7GYQ"
+                                                        }
+                                                    ],
+                                                    "type": "LMZJ1 0.5",
+                                                    "name": "电流互感器",
+                                                    "uuid": "isMSlWq0eh"
+                                                }
+                                            ],
+                                            "type": "NZM1-630S",
+                                            "switch": "1",
+                                            "name": "塑壳断路器",
+                                            "uuid": "iejNIxas3w"
+                                        }
+                                    ],
+                                    "type": "TMY",
+                                    "name": "支路母排",
+                                    "uuid": "0uN85SCpHs"
+                                },
+                                {
+                                    "position": 2,
+                                    "specification": "描述：支路母排",
+                                    "attribute": "支路母排",
+                                    "desc": "30*5",
+                                    "withstandcurrent": "",
+                                    "ratedcurentvalue": "460",
+                                    "linkType": "master",
+                                    "material": [
+                                        {
+                                            "position": 1,
+                                            "specification": "描述：断路器",
+                                            "attribute": "塑壳断路器",
+                                            "desc": "",
+                                            "withstandcurrent": "42000",
+                                            "ratedcurentvalue": "400",
+                                            "linkType": "master",
+                                            "material": [
+                                                {
+                                                    "position": 1,
+                                                    "specification": "备用电流互感器",
+                                                    "attribute": "电流互感器b",
+                                                    "desc": "400/5",
+                                                    "withstandcurrent": "",
+                                                    "ratedcurentvalue": "400",
+                                                    "linkType": "master",
+                                                    "material": [
+                                                        {
+                                                            "position": 1,
+                                                            "specification": "描述：备用",
+                                                            "attribute": "",
+                                                            "desc": "",
+                                                            "withstandcurrent": "",
+                                                            "ratedcurentvalue": "",
+                                                            "linkType": "branch",
+                                                            "type": "xx20001 型号",
+                                                            "name": "出线总线",
+                                                            "uuid": "zuXQromLeu"
+                                                        }
+                                                    ],
+                                                    "type": "LMZJ1 0.5",
+                                                    "name": "电流互感器",
+                                                    "uuid": "S1OsLEiXnE"
+                                                }
+                                            ],
+                                            "type": "NZW-400S",
+                                            "switch": "1",
+                                            "name": "塑壳断路器",
+                                            "uuid": "s8X109pu3T"
+                                        }
+                                    ],
+                                    "type": "TMY",
+                                    "name": "支路母排",
+                                    "uuid": "yAvci92szf"
+                                }
+                            ],
+                            "type": "HD13BX",
+                            "switch": "1",
+                            "name": "开启式刀开关",
+                            "uuid": "CVYdB4fw5M"
+                        }
+                    ],
+                    "type": "TMY",
+                    "name": "连接母排",
+                    "uuid": "6FQ1J7V8im"
+                }
+            ]
+        }
+    ],
+    "model": "xxx",
+    "creat_time": "2019-04-29 23:03:25",
+    "name": "低压馈电柜",
+    "alias": "#1-4馈电柜",
+    "cabinetnumber": "0907",
+    "bid": "DOUT1423432557"
+}

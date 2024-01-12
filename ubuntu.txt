@@ -109,19 +109,16 @@ kubectl apply -f calico.yaml
 下载yaml文件：
 文件url：https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.0/src/deploy/recommended/kubernetes-dashboard.yaml
 
-参考：https://blog.csdn.net/xhredeem/article/details/127439037
+参考：
+https://blog.csdn.net/xhredeem/article/details/127439037
 
 使用下列命令生成dashboard的token
  kubectl  describe  -n kubernetes-dashboard  secrets default-token-gmzm7
  kubectl  describe  -n kubernetes-dashboard  secrets admin-user-token-6nl7w
-
-
+ kubectl  describe  -n kubernetes-dashboard  secrets dashboard-admin-user-token
 209：
 156：
-eyJhbGciOiJSUzI1NiIsImtpZCI6IkxBWGFmNGt1ekNJdjNzYmIxWGZCMWI1bWxKbGJQdzlCdmVIMDM4MlQwSk0ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTZubDd3Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMWRlOTg1ZS0wYTBlLTRhZGYtYWM2ZS0zMTEwMTc4NWM0YzEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.jh1M1U3ejlRtxUXMJazr9tWdsDcnktvj8ikynavgjaH3QLHnx33x99FUGJNtAgA9ChuFXXvouEqICYXVdGIerU2hVjRPfmfkUCB-fndPLQxyCt6GVjDInbL8dot35P3BIVhQL7vlSlSWbkjFUPBIQmDBnN-BaXD1aUBS4cdSWdpFX0z7O71Bkob-ED9BLoGpz-Ex0Iq3x_0dkudprsNTjTrIRO-aXUbsIcNRG5bNN8GIESSZp2CevpWaWGN1S93YfQpzNFozx-PC5cte8MKpZoq68IELkR6ay-gRCWTqK3dO-fOuc_cDCKt6WoNfGWFwZEq1MyP_63oIlIuZLrMKbA
- kubectl  describe  -n kubernetes-dashboard  secrets admin-user-token-6nl7w
-
-
+eyJhbGciOiJSUzI1NiIsImtpZCI6ImEzVHBQSWlqcHllbzJZQjVaLWtHRWt5dE9nWmdtU2VhbFBFMGRub195V2sifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkYXNoYm9hcmQtYWRtaW4tdXNlci10b2tlbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhZG1pbi11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMjdlOGNmYjktZjE4MS00NGQ2LTgyMDItNmFmODQ4OWI2NzA5Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmVybmV0ZXMtZGFzaGJvYXJkOmFkbWluLXVzZXIifQ.c_zP40GgcMZcBMr9vPu5NkcWObWYnjG-YDfVKudy3NRrpBkBj96zfzmBoiKnMBnzSJqCpibtlBiY7ZbbiMJe1UhkKDFNcSEtAJHgUQ8xbN0FT75l-LDyf9gnyZr9S2j8cxDEqcG0fa7U86NfUZ0CjA4q6f5CaZNHV4h1FScEVCvhLOift8rcZU0mXFjJ0xahXz6uOZOOkE4mWuDRlUl6wFDJF8BpwsfAz1E4lPJuGPltQnCR6oc886KWsqy1PzbWjSkIvor1OOOwzjSPRVPs0nm9HvlGNvhvpotTh31lb-OJoNgVNtwnPiYH0hINBIoQBaYKIpD9iu3ZJoCGMKY5Gg
 
 jian@master-1:~/kpi$ kubeadm token create --print-join-command
 
@@ -166,7 +163,7 @@ kubectl label nodes <node-name> <label-key>=<label-value>
 修改实例： 
 
 kubectl label nodes k8s-node1.hikvision.com node-role.kubernetes.io/worker=worker
-kubectl label nodes node-1 node-role.kubernetes.io/worker=worker
+kubectl label nodes worker.kuaima node-role.kubernetes.io/worker=worker
 
 删除label：
 kubectl label nodes <node-name> <label-key>-
@@ -216,3 +213,26 @@ docker pull hub.dajiaxiaojia.com/kuaima/hardware-api@sha256:13eaff384890f85a52df
 To open the dashboard directly by port-forward:
 
   vela port-forward -n vela-system addon-velaux 8000:8000
+
+
+创建用户
+[root@vms61 ccadmin]#kubectl create serviceaccount ccadmin -n cc
+#再次创建一个serviceaccount，指定名称空间为default
+
+创建角色
+
+创建 rolebinding 把ccrole绑定 ccadmin
+[root@vms61 ccadmin]# kubectl create rolebinding cc-rolebinding --user=ccadmin --clusterrole=admin --serviceaccount=cc:ccadmin -n cc
+
+
+#使用rolebinding绑定clusterrole用户admin到刚刚创建的serviceaccount上
+
+[root@fp-web-157 sh_jenkins.sh]# kubectl get secret -n cc
+NAME TYPE DATA AGE
+ccadmin-token-jtpfw kubernetes.io/service-account-token 3 40s
+ccharborsecretkey kubernetes.io/dockerconfigjson 1 3d
+default-token-9cb2v kubernetes.io/service-account-token 3 6d
+
+
+//得到令牌token
+[root@fp-web-157 sh_jenkins.sh]# kubectl describe secret ccadmin-token-jtpfw -n cc

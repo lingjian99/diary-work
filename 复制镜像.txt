@@ -1,0 +1,22 @@
+A->B
+在A机器上导出镜像到文件
+docker save -o image.tar c41e9fcadf5a
+复制文件到B机
+在B机上导入文件
+sudo docker load -i image.tar
+
+在B机上查看所有images，找到类似下列miage
+<none>                                               <none>    c41e9fcadf5a   2 years ago     47.7MB
+
+修改镜像名和tag
+sudo docker tag c41e9fcadf5a registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.1.1
+
+vela图形界面安装应用
+1. 创建一个应用
+2. 绑定应用到环境（一个或多个，比如一个测试环境，一个生产环境），此时可以创建一个环境
+3. 部署应用
+
+
+sudo docker tag 5e2b2511310b fluxcd/kustomize-controller:v0.32.0 
+
+fluxcd/image-reflector-controller:v0.23.1

@@ -1,0 +1,95 @@
+#harbor-registry-pvc
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: harbor-registry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "harbor"
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      app: harbor-registry
+---
+#harbor-chartmuseum-pvc
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: harbor-chartmuseum
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "harbor"
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      app: harbor-chartmuseum
+---
+#harbor-jobservice-pvc
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: harbor-jobservice
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "harbor"
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      app: harbor-jobservice 
+---
+#harbor-database-pvc
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: harbor-database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "harbor"
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      app: harbor-database  
+---
+#harbor-redis-pvc
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: harbor-redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "harbor"
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      app: harbor-redis
+---
+#harbor-trivy-pvc
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: harbor-trivy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "harbor"
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      app: harbor-trivy

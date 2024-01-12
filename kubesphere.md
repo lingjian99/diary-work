@@ -1,2 +1,0 @@
-安装KubeSphere首先要设置
-export KKZONE=cn

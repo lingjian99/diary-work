@@ -1,3 +1,4 @@
+# 创建角色
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -9,7 +10,7 @@ rules:
     verbs: ["*"]
 
 ---
-
+#角色绑定
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -22,4 +23,3 @@ subjects:
 roleRef:
   kind: Role
   name: ling-admin
-  apiGrou: ""

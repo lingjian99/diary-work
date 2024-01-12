@@ -271,7 +271,7 @@ kubeadm init --apiserver-advertise-address=192.168.1.110 --pod-network-cidr=192.
 3.配置kubectl  
 就是执行初始化成功后输出的那三条命令
 
->mkdir -p $HOME/.kube<br>
+>mkdir -p $HOME/<br>
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config<br>
 chown $(id -u):$(id -g) $HOME/.kube/config<br>
 
